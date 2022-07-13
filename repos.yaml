@@ -1,0 +1,23 @@
+repos:
+  - id: /.*/
+    allowed_overrides: [workflow]
+    pre_workflow_hooks:
+      - run: "cat ~/workspace/atlantis/atlantis.yaml > atlantis.yaml"
+
+workflows:
+  poc:
+    plan:
+      steps:
+      - env:
+          name: TF_WORKSPACE
+          command: echo $WORKSPACE
+      - init
+      - plan:
+          extra_args: ["-var-file=tfvars/$WORKSPACE.tfvars"]
+
+    apply:
+      steps:
+      - env:
+          name: TF_WORKSPACE
+          command: echo $WORKSPACE
+      - apply
