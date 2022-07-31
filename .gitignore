@@ -3,3 +3,5 @@ atlantis.var
 ngrok
 atlantis*.zip
 atlantis
+.env.local
+.terraformrc

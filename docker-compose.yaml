@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  ngrok:
+    image: ngrok/ngrok
+    environment:
+    - NGROK_AUTHTOKEN
+    ports:
+      - 4040:4040
+    command: http atlantis:4141
+  
+  atlantis:
+    image: ghcr.io/runatlantis/atlantis:v0.19.6
+    environment:
+    - ATLANTIS_ATLANTIS_URL
+    - ATLANTIS_GH_USER
+    - ATLANTIS_GH_TOKEN
+    - ATLANTIS_GH_WEBHOOK_SECRET
+    - ATLANTIS_REPO_ALLOWLIST
+    - ATLANTIS_REPO_CONFIG
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - AWS_SESSION_TOKEN
+    volumes:
+      - $PWD/config/:/config/
