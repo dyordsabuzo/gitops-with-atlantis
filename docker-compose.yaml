@@ -12,8 +12,9 @@ services:
     image: ghcr.io/runatlantis/atlantis:v0.19.6
     environment:
     - ATLANTIS_ATLANTIS_URL
-    - ATLANTIS_GH_USER
-    - ATLANTIS_GH_TOKEN
+    - ATLANTIS_GH_APP_ID
+    - ATLANTIS_GH_APP_KEY_FILE
+    - ATLANTIS_WRITE_GIT_CREDS
     - ATLANTIS_GH_WEBHOOK_SECRET
     - ATLANTIS_REPO_ALLOWLIST
     - ATLANTIS_REPO_CONFIG

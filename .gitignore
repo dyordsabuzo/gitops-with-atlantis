@@ -5,3 +5,4 @@ atlantis*.zip
 atlantis
 .env.local
 .terraformrc
+github-private-file.pem
