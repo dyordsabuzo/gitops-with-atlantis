@@ -2,10 +2,10 @@ repos:
   - id: /.*/
     allowed_overrides: [workflow]
     pre_workflow_hooks:
-      - run: "cp /config/.terraformrc $HOME; cat /config/atlantis.yaml > atlantis.yaml"
+      - run: "/usr/local/bin/generate-tfc-rc.sh; /usr/local/bin/generate-client-config.sh"
 
 workflows:
-  poc:
+  terraform:
     plan:
       steps:
       - env:
