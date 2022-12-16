@@ -1,8 +1,4 @@
-atlantis.var
-*.zip
-ngrok
-atlantis*.zip
-atlantis
-.env.local
-.terraformrc
-github-private-file.pem
+**/.terraform/**
+**/.terragrunt-cache/**
+**tfplan**
+.terraform.lock.hcl

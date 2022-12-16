@@ -1,0 +1,6 @@
+SECRET=68b329da9893e34099c7
+URL=https://cb94-14-202-93-79.au.ngrok.io
+TOKEN=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
+USERNAME=dyordsabuzo
+REPO_ALLOWLIST=github.com/dyordsabuzo/*
+REPO_CONFIG=/workspace/repos.yaml
