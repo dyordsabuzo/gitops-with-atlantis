@@ -9,12 +9,8 @@ variable "atlantis_url" {
   type        = string
 }
 
-variable "atlantis_write_git_creds" {
-  description = "Flag to indicate if git creds will be written in atlantis"
-  type        = bool
-}
-
 variable "atlantis_repo_allowlist" {
   description = "Comma delimited string containing repos to use atlantis"
   type        = string
+  default     = "*"
 }
