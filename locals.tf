@@ -1,15 +1,17 @@
 locals {
+  base_domain  = "pablosspot.ml"
+  atlantis_url = "atlantis.${local.base_domain}"
+  repos_json   = jsonencode(yamldecode(file("${path.module}/config/repos.yaml")))
 
-  repos_json = jsonencode(yamldecode(file("${path.module}/config/repos.yaml")))
   env_variables = {
-    ATLANTIS_ATLANTIS_URL                = var.atlantis_url
+    ATLANTIS_ATLANTIS_URL                = "https://${local.atlantis_url}"
     ATLANTIS_REPO_ALLOWLIST              = var.atlantis_repo_allowlist
     ATLANTIS_REPO_CONFIG_JSON            = local.repos_json
-    ATLANTIS_WRITE_GIT_CREDS             = true
-    ATLANTIS_DISABLE_APPLY_ALL           = true
-    ATLANTIS_SILENCE_NO_PROJECTS         = true
-    ATLANTIS_PORT                        = 4141
-    ATLANTIS_ENABLE_DIFF_MARKDOWN_FORMAT = true
+    ATLANTIS_WRITE_GIT_CREDS             = "true"
+    ATLANTIS_DISABLE_APPLY_ALL           = "true"
+    ATLANTIS_SILENCE_NO_PROJECTS         = "true"
+    ATLANTIS_PORT                        = "4141"
+    ATLANTIS_ENABLE_DIFF_MARKDOWN_FORMAT = "true"
   }
 
   secret_variables = [
@@ -19,8 +21,12 @@ locals {
     "TERRAFORM_CLOUD_TOKEN"
   ]
 
-  tmp = {
-    for item in local.secret_variables :
-    item => aws_ssm_parameter.environment[item].arn
-  }
+  secrets = merge({
+    AWS_ACCESS_KEY_ID     = aws_ssm_parameter.access.arn
+    AWS_SECRET_ACCESS_KEY = aws_ssm_parameter.secret.arn
+    },
+    {
+      for item in local.secret_variables :
+      item => aws_ssm_parameter.environment[item].arn
+  })
 }

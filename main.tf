@@ -45,3 +45,43 @@ resource "aws_ssm_parameter" "environment" {
     ignore_changes = [value]
   }
 }
+
+module "pablosspot-lb" {
+  source  = "app.terraform.io/pablosspot/pablosspot-lb/aws"
+  version = "0.0.4"
+  # insert required variables here
+
+  base_domain = local.base_domain
+  system_name = "generic"
+  endpoints   = ["atlantis"]
+
+}
+
+module "pablosspot-ecs" {
+  source  = "app.terraform.io/pablosspot/pablosspot-ecs/aws"
+  version = "0.12.8"
+  # insert required variables here
+  cluster_name = "atlantis"
+  service_name = "atlantis"
+  task_family  = "atlantis"
+
+  launch_type = {
+    type   = "FARGATE"
+    cpu    = 256
+    memory = 512
+  }
+
+  container_definitions = jsonencode([{
+    name           = "atlantis"
+    image          = docker_registry_image.image.name
+    container_port = 4141
+    environment    = local.env_variables
+    secrets        = local.secrets
+    command        = ["server"]
+  }])
+
+  endpoint_details = {
+    lb_listener_arn = module.pablosspot-lb.lb_listener_arn
+    domain_url      = local.atlantis_url
+  }
+}
