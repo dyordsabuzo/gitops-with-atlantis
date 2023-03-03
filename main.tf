@@ -35,18 +35,6 @@ resource "aws_ssm_parameter" "secret" {
   value = aws_iam_access_key.key.secret
 }
 
-resource "aws_ssm_parameter" "environment" {
-  for_each = toset(local.secret_variables)
-  name     = "/atlantis/${each.key}"
-  type     = "SecureString"
-  value    = "UNSET"
-
-  lifecycle {
-    ignore_changes  = [value]
-    prevent_destroy = true
-  }
-}
-
 module "pablosspot-lb" {
   source  = "app.terraform.io/pablosspot/pablosspot-lb/aws"
   version = "0.0.4"

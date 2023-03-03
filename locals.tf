@@ -27,6 +27,6 @@ locals {
     },
     {
       for item in local.secret_variables :
-      item => aws_ssm_parameter.environment[item].arn
+      item => data.aws_ssm_parameter.environment[item].arn
   })
 }

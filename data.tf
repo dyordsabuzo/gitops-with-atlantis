@@ -13,3 +13,9 @@ data "external" "command" {
 data "aws_iam_group" "group" {
   group_name = "DeploymentGroup"
 }
+
+
+data "aws_ssm_parameter" "environment" {
+  for_each = toset(local.secret_variables)
+  name     = "/atlantis/${each.key}"
+}
