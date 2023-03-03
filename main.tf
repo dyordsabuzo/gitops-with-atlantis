@@ -59,7 +59,7 @@ module "pablosspot-lb" {
 
 module "pablosspot-ecs" {
   source  = "app.terraform.io/pablosspot/pablosspot-ecs/aws"
-  version = "0.12.8"
+  version = "0.12.9"
   # insert required variables here
   cluster_name = "atlantis"
   service_name = "atlantis"
