@@ -42,7 +42,8 @@ resource "aws_ssm_parameter" "environment" {
   value    = "UNSET"
 
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes  = [value]
+    prevent_destroy = true
   }
 }
 
