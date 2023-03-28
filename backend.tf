@@ -18,5 +18,10 @@ terraform {
       source  = "kreuzwerker/docker"
       version = "2.23.0"
     }
+
+    okta = {
+      source  = "okta/okta"
+      version = "~> 3.37"
+    }
   }
 }

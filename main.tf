@@ -48,7 +48,7 @@ module "pablosspot-lb" {
 
 module "pablosspot-ecs" {
   source  = "app.terraform.io/pablosspot/pablosspot-ecs/aws"
-  version = "0.12.9"
+  version = "0.12.11"
   # insert required variables here
   cluster_name = "atlantis"
   service_name = "atlantis"
@@ -73,4 +73,30 @@ module "pablosspot-ecs" {
     lb_listener_arn = module.pablosspot-lb.lb_listener_arn
     domain_url      = local.atlantis_url
   }
+
+  authenticate_oidc_details = {
+    client_id     = okta_app_oauth.oidc.client_id
+    client_secret = okta_app_oauth.oidc.client_secret
+    oidc_endpoint = data.aws_ssm_parameter.okta.value
+  }
+
+  lb_authentication_exclusion = {
+    header_names   = ["X-Hub-Signatures-256"]
+    path_pattern   = ["/events"]
+    request_method = ["POST"]
+  }
+}
+
+resource "okta_app_oauth" "oidc" {
+  label          = "Atlantis OIDC"
+  type           = "web"
+  omit_secret    = false
+  grant_types    = ["authorization_code"]
+  response_types = ["code"]
+  redirect_uris  = ["https://atlantis.pablosspot.ml/oauth2/idpresponse"]
+}
+
+resource "okta_app_group_assignment" "assignment" {
+  app_id   = okta_app_oauth.oidc.id
+  group_id = data.okta_group.group.id
 }

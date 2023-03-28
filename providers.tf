@@ -16,3 +16,9 @@ provider "docker" {
     password = data.aws_ecr_authorization_token.token.password
   }
 }
+
+provider "okta" {
+  org_name  = data.aws_ssm_parameter.org_name.value
+  base_url  = data.aws_ssm_parameter.base_url.value
+  api_token = data.aws_ssm_parameter.token.value
+}
