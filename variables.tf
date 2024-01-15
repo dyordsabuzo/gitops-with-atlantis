@@ -9,3 +9,9 @@ variable "atlantis_repo_allowlist" {
   type        = string
   default     = "*"
 }
+
+variable "tags" {
+  description = "Comma delimited string containing repos to use atlantis"
+  type        = string
+  default     = "*"
+}
